@@ -2,15 +2,15 @@ import { FormEvent, useEffect, useState } from 'react'
 import cnfg, { auth } from './configuration'
 import './App.css'
 import { getDatabase, onValue, ref, push } from 'firebase/database'
-import { SignUpWithGoogle } from './SignUp'
-import { getAuth, signOut } from "firebase/auth";
+import { getAuth, signOut, User } from "firebase/auth";
 import { signInWithPopup,GoogleAuthProvider } from "firebase/auth";
 
 function App() {
 
-  const [data,setData] = useState(["loading..."])
-  const [value,setValue] = useState("")
-  const [user, SetUser] = useState(null)
+  const [data,setData] = useState<string[]>(["loading..."])
+  const [value,setValue] = useState<string>("")
+  // const [user, SetUser] = useState(null)
+  const [user, setUser] = useState<User | null>(null);
 
   const db = getDatabase(cnfg)
   const dbcol = ref(db, 'dete')
@@ -38,20 +38,14 @@ function App() {
     const provider = new GoogleAuthProvider();
 
     const result=await signInWithPopup(auth, provider)
-    const credential = GoogleAuthProvider.credentialFromResult(result);
-    if (!credential){
-      console.error("Error in user Credential")
-      return
-    }
-    const token = credential.accessToken;
-    SetUser(result.user)
+    setUser(result.user)
     console.log(user) 
   }
 
   useEffect(() => {
     onValue(dbcol, snapshot => {
       const ss = snapshot.val() || {}
-      const vals = Object.values(ss)
+      const vals: string[] = Object.values(ss)
       setData(vals)
       console.log(vals) 
     })
