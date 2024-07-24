@@ -31,6 +31,7 @@ function App() {
   function SignOutt() {
     const ath = getAuth()
     signOut(ath)
+    setUser(null)
   }
 
   const SignUpWithGoogle = async () => {
