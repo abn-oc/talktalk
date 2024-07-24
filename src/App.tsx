@@ -9,7 +9,6 @@ function App() {
 
   const [data,setData] = useState<string[]>(["loading..."])
   const [value,setValue] = useState<string>("")
-  // const [user, SetUser] = useState(null)
   const [user, setUser] = useState<User | null>(null);
 
   const db = getDatabase(cnfg)
@@ -34,12 +33,19 @@ function App() {
     signOut(ath)
   }
 
-  async function SignUpWithGoogle() {
+  const SignUpWithGoogle = async () => {
     const provider = new GoogleAuthProvider();
 
     const result=await signInWithPopup(auth, provider)
-    setUser(result.user)
-    console.log(user) 
+    const credential = GoogleAuthProvider.credentialFromResult(result);
+    if (!credential){
+      console.error("Error in user Credential")
+      return
+    }
+    const token = credential.accessToken;
+    const user = result.user;
+    setUser(user)
+    console.log(user,token)  
   }
 
   useEffect(() => {
