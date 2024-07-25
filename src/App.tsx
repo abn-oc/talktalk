@@ -60,7 +60,7 @@ function App() {
       console.error("Error in user Credential")
       return
     }
-    const token = credential.accessToken;
+    // const token = credential.accessToken;
     const user = result.user;
     setUser(user)
     // console.log(user,token)  
