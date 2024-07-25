@@ -1,7 +1,7 @@
 import { FormEvent, useEffect, useState } from 'react'
 import cnfg, { auth } from './configuration'
 import './App.css'
-import { getDatabase, onValue, ref, push } from 'firebase/database'
+import { getDatabase, onValue, ref, push, set, get } from 'firebase/database'
 import { getAuth, signOut, User } from "firebase/auth";
 import { signInWithPopup,GoogleAuthProvider } from "firebase/auth";
 
@@ -14,9 +14,27 @@ function App() {
   const db = getDatabase(cnfg)
   const dbcol = ref(db, 'dete')
 
-  function addToList(e: FormEvent<HTMLFormElement>, item: string) {
-    if(user) {
-      const msg = user.displayName + " says: " + item
+  async function addToList(e: FormEvent<HTMLFormElement>, item: string) {
+    e.preventDefault()
+    if(!user) {
+      alert("sign in kerke msg bhejskte ho")
+      return;
+    }
+    else if(user && item.startsWith('/sn')) {
+      const refn = ref(db, '/users/' + user.displayName)
+      const currentName = (await get(refn)).val()
+      console.log(currentName)
+      const newName = item.substring(3).trim()
+      console.log(newName)
+      set(refn, newName)
+      const msg = `noti:${currentName} changed their username to ${newName}`
+      push(dbcol, msg)
+      setValue("")
+    }
+    else if(user) {
+      const refn = ref(db, '/users/' + user.displayName)
+      const currentName = (await get(refn)).val()
+      const msg = currentName + " says: " + item
       push(dbcol, msg)
       setValue("")
     }
@@ -25,7 +43,6 @@ function App() {
       push(dbcol, msg)
       setValue("")
     }
-    e.preventDefault()
   }
 
   function SignOutt() {
@@ -46,7 +63,7 @@ function App() {
     const token = credential.accessToken;
     const user = result.user;
     setUser(user)
-    console.log(user,token)  
+    // console.log(user,token)  
   }
 
   useEffect(() => {
@@ -54,7 +71,7 @@ function App() {
       const ss = snapshot.val() || {}
       const vals: string[] = Object.values(ss)
       setData(vals)
-      console.log(vals) 
+      // console.log(vals) 
     })
   }, [])
 
