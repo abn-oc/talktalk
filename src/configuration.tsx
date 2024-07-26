@@ -6,7 +6,8 @@ import { getAuth } from "firebase/auth";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyBgLZbki_oRXVHJYS-FlMUdlME-zZcvwyE",
+  // apiKey: "AIzaSyBgLZbki_oRXVHJYS-FlMUdlME-zZcvwyE",
+  apiKey: import.meta.env.VITE_APIKEY,
   authDomain: "talktalk-5dc04.firebaseapp.com",
   databaseURL: "https://talktalk-5dc04-default-rtdb.asia-southeast1.firebasedatabase.app",
   projectId: "talktalk-5dc04",
