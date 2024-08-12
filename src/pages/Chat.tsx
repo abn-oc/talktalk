@@ -1,10 +1,9 @@
-import './App.css'
 import { FormEvent, useContext, useEffect, useState } from 'react'
-import cnfg from './configuration'
+import cnfg from '../configuration'
 import { getDatabase, onValue, ref, push} from 'firebase/database'
-import { getAuth, signOut } from "firebase/auth";
-import { userContext } from './App';
+import { userContext } from '../App';
 import { useNavigate } from 'react-router-dom';
+import useUID from '../hooks/useUID';
 
 function Chat() {
 
@@ -12,19 +11,26 @@ function Chat() {
   const [value,setValue] = useState<string>("")
   const user = useContext(userContext)
   const navigate = useNavigate()
+  const appUser = useUID(user?.uid)
+  if(appUser.username) {
+    console.log(`Logged in as ${appUser}`)
+  }
+  else if(appUser.username == null) {
+    console.log(`New User Signed Up`)
+    navigate('/account')
+  }
 
   const db = getDatabase(cnfg)
   const dbmsgs = ref(db, 'dbmsgs')
 
   async function sendMsg(e: FormEvent<HTMLFormElement>, item: string) {
     e.preventDefault()
-    const msg = item
+    const msg = `${appUser.username}:${item}`
     push(dbmsgs, msg)
     setValue("")
   }
 
   function SignOutt() {
-    // signOut(getAuth()) iske bad setUser(null) krdia tha but
     navigate('/')
   }
 

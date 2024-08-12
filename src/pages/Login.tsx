@@ -1,5 +1,5 @@
 import { GoogleAuthProvider, signInWithPopup, User } from "firebase/auth";
-import { auth } from "./configuration";
+import { auth } from "../configuration";
 import { useNavigate } from "react-router-dom";
 
 export default function Login({setUser}:{setUser: React.Dispatch<React.SetStateAction<User | null>>}) {
