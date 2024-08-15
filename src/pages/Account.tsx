@@ -1,4 +1,4 @@
-import { useContext, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { userContext } from "../App"
 import useUID from "../hooks/useUID"
 import { getDatabase, ref, set } from "firebase/database"
@@ -9,7 +9,7 @@ export default function Account() {
 
     const user = useContext(userContext)
     const appuser = useUID(user?.uid)
-    const [val, setVal] = useState(appuser.username? appuser.username: "")
+    const [val, setVal] = useState<string>("...")
     const db = getDatabase(cnfg)
     const navigate = useNavigate()
 
@@ -17,6 +17,11 @@ export default function Account() {
         set(ref(db, `users/${user?.uid}`), {username: val})
         navigate('/chat')
     }
+
+    useEffect(() => {
+        if(val == "..." && appuser.username != "") setVal(appuser.username)
+    }, [appuser])
+
 
     return (
         <>
