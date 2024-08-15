@@ -5,6 +5,7 @@ import Login from "./pages/Login"
 import './App.css'
 import { User } from "firebase/auth"
 import Account from "./pages/Account"
+import AccountCreate from "./pages/AccountCreate"
 
 export const userContext = createContext<User | null>(null) 
 
@@ -15,9 +16,10 @@ function App() {
     return (
         <>
         <Routes>
-        <Route path='/' element={<Login setUser={setUser}/>}/>
+        <Route path='/' element={<Login setUser={setUser} />}/>
         <Route path='/chat' element={<userContext.Provider value={user}><Chat/></userContext.Provider>}/>
         <Route path='/account' element={<userContext.Provider value={user}><Account/></userContext.Provider>}/>
+        <Route path="/accountcreation" element={<AccountCreate/>}/>
         </Routes>
         </>
     )

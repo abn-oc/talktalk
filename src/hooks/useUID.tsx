@@ -4,7 +4,7 @@ import { getDatabase, ref, get} from 'firebase/database'
 
 export default function useUID(uid:string | undefined) {
 
-    const [un,setUN] = useState(null)
+    const [un,setUN] = useState<string>("")
 
     useEffect(() => {
         (async() => {
@@ -12,10 +12,9 @@ export default function useUID(uid:string | undefined) {
             const refu = ref(db, `users/${uid}`)
             const val = (await get(refu)).val()
             if(val == undefined) {
-                return;
+                setUN("")
             }
             setUN(val.username)
-            return;
         })()
     }, [uid])
 
