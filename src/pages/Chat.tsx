@@ -13,7 +13,7 @@ function Chat() {
   const navigate = useNavigate()
   const db = getDatabase(cnfg)
   const dbmsgs = ref(db, 'dbmsgs')
-  const user = useContext(appContext)[0]
+  // const user = useContext(appContext)[0]
   const setUser = useContext(appContext)[1]
   const userApp:appUser = useContext(appContext)[2]
 
