@@ -1,4 +1,5 @@
 export interface appUser {
+    pfp: string
     username: string
 }
 

@@ -13,12 +13,13 @@ function Chat() {
   const navigate = useNavigate()
   const db = getDatabase(cnfg)
   const dbmsgs = ref(db, 'dbmsgs')
+  const user = useContext(appContext)[0]
   const setUser = useContext(appContext)[1]
   const userApp:appUser = useContext(appContext)[2]
 
   async function sendMsg(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    const msg:MessageType = {pfpURL:"https://shorturl.at/jWWkl", username: userApp.username, content: value} 
+    const msg:MessageType = {pfpURL: userApp.pfp, username: userApp.username, content: value} 
     push(dbmsgs, msg)
     setValue("")
   }
@@ -47,7 +48,7 @@ function Chat() {
     <form onSubmit={sendMsg}>
       <input type="text" value={value} onChange={e => setValue(e.target.value)}/>
     </form>
-    <button onClick={() => navigate('/account')}>profile</button>
+    <button onClick={() => navigate('/profile')}>profile</button>
     <button onClick={SignOutt}>sign out</button>
     </>
   )
