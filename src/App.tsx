@@ -34,8 +34,8 @@ function App() {
         <appContext.Provider value={[user, setUser, appUser, setAU]}>        
         <Routes>
         <Route path='/' element={<Login/>}/>
-        <Route path='/chat' element={<Chat/>}/>
-        <Route path='/profile' element={<Profile/>}/>
+        <Route path='/chat' element={user? <Chat/>: <></>}/>
+        <Route path='/profile' element={user? <Profile/>: <></>}/>
         <Route path='/create-account' element={<CreateAcc/>}/>
         </Routes>
         </appContext.Provider>
