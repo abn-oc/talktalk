@@ -1,12 +1,18 @@
-import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup, User } from "firebase/auth";
+import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup} from "firebase/auth";
 import cnfg, { auth } from "../configuration";
 import { useNavigate } from "react-router-dom";
-import { FormEvent, useState } from "react";
-import { get, getDatabase, ref } from "firebase/database";
+import { FormEvent, useContext, useState } from "react";
+import { appContext } from "../App";
+import { DataSnapshot, get, getDatabase, ref } from "firebase/database";
 
-export default function Login({setUser}:{setUser: React.Dispatch<React.SetStateAction<User | null>>}) {
+export default function Login() {
 
+    const db = getDatabase(cnfg)
     const navigate = useNavigate()
+    const setUser = useContext(appContext)[1]
+    const setAU = useContext(appContext)[3]
+    const [em, setEM] = useState<string>("")
+    const [pass, setPass] = useState<string>("")
 
     async function SignUpWithGoogle() {
         const provider = new GoogleAuthProvider();
@@ -18,24 +24,29 @@ export default function Login({setUser}:{setUser: React.Dispatch<React.SetStateA
           return
         }
         setUser(result.user)
-        const db = getDatabase(cnfg)
-        const refu = ref(db, `users/${result.user.uid}`)
-        const valu = await get(refu)
-        const val = valu.val()
-        if(valu && val && val.username) navigate('/chat')
-        else navigate('/account')
+        //if userApp exists send to chat otherwise send to profile
+        const UAref = ref(db, `users/${result.user.uid}`)
+        const ss: DataSnapshot = await get(UAref)
+        if(ss.exists()) {
+          setAU(ss.val())
+          navigate('/chat')
+        }
+        else navigate('/profile')
     }
-
-    const [em, setEM] = useState<string>("")
-    const [pass, setPass] = useState<string>("")
 
     async function login(e: FormEvent<HTMLFormElement>) {
         e.preventDefault()
-        console.log("loggingin")
         try {
-          const creds = await signInWithEmailAndPassword(auth, em, pass)
-          setUser(creds.user)
-          navigate('/chat')
+          const result = await signInWithEmailAndPassword(auth, em, pass)
+          setUser(result.user)
+          //if userApp exists send to chat otherwise send to profile
+          const UAref = ref(db, `users/${result.user.uid}`)
+          const ss: DataSnapshot = await get(UAref)
+          if(ss.exists()) {
+            setAU(ss.val())
+            navigate('/chat')
+          }
+          else navigate('/profile')
         } 
         catch (error: any) {
           console.log(`error: ${error.code}`)
@@ -44,14 +55,14 @@ export default function Login({setUser}:{setUser: React.Dispatch<React.SetStateA
 
     return (
         <>
-        <h1>login page</h1>
+        <h1>Login</h1>
         <div>
             <form onSubmit={e => login(e)}>
                 <input type="text" value={em} onChange={e => setEM(e.target.value)} placeholder="email"/>
                 <input type="text" value={pass} onChange={e => setPass(e.target.value)} placeholder="password"/>
                 <button>login</button>
             </form>
-            <button onClick={() => navigate('/accountcreation')}>Create Account</button>
+            <button onClick={() => navigate('/create-account')}>Create Account</button>
             <p>-OR-</p>
             <button onClick={SignUpWithGoogle}>Continue with Google</button>
         </div>

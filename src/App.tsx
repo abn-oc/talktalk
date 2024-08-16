@@ -1,26 +1,44 @@
-import { createContext, useState } from "react"
+import { createContext, useEffect, useState } from "react"
 import { Route, Routes } from "react-router-dom"
-import Chat from "./pages/Chat"
 import Login from "./pages/Login"
+import Chat from "./pages/Chat"
 import './App.css'
-import { User } from "firebase/auth"
-import Account from "./pages/Account"
-import AccountCreate from "./pages/AccountCreate"
+import { onAuthStateChanged, User } from "firebase/auth"
+import Profile from "./pages/Profile"
+import { appUser } from "./types/types"
+import CreateAcc from "./pages/CreateAcc"
+import cnfg, { auth } from "./configuration"
+import { get, getDatabase, ref } from "firebase/database"
 
-export const userContext = createContext<User | null>(null) 
+export const appContext = createContext<any>(null) 
 
 function App() {
     
-    const [user,setUser] = useState<User | null>(null)
-    
+    const db = getDatabase(cnfg)
+    const [user, setUser] = useState<null | User>(null)
+    const [appUser, setAU] = useState<null | appUser>(null)
+
+    useEffect(() => {(async () => {
+        onAuthStateChanged(auth, async (currentUser) => {
+            if(currentUser) {
+                setUser(currentUser);
+                const dbref = ref(db, `users/${currentUser.uid}`)
+                const ss = await get(dbref)
+                if(ss.exists()) setAU(ss.val())
+            }
+        })
+    })()}, []);
+
     return (
         <>
+        <appContext.Provider value={[user, setUser, appUser, setAU]}>        
         <Routes>
-        <Route path='/' element={<Login setUser={setUser} />}/>
-        <Route path='/chat' element={<userContext.Provider value={user}><Chat/></userContext.Provider>}/>
-        <Route path='/account' element={<userContext.Provider value={user}><Account/></userContext.Provider>}/>
-        <Route path="/accountcreation" element={<AccountCreate/>}/>
+        <Route path='/' element={<Login/>}/>
+        <Route path='/chat' element={<Chat/>}/>
+        <Route path='/profile' element={<Profile/>}/>
+        <Route path='/create-account' element={<CreateAcc/>}/>
         </Routes>
+        </appContext.Provider>
         </>
     )
 }
