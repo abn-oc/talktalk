@@ -17,7 +17,7 @@ export default function Profile() {
     const stref = refs(st, `${user.uid}/lain.jpg`)
     const navigate = useNavigate()
     const [value, setValue] = useState<string>("loading...")
-    const [URL, setURL] = useState<string>('src/assets/defaultpfp.jpg')
+    const [URL, setURL] = useState<string>('src/assets/spinner.gif')
 
     async function updateProfile(e: FormEvent<HTMLFormElement>) {
         e.preventDefault()
@@ -26,18 +26,6 @@ export default function Profile() {
         if(ss.exists()) setAU(ss.val())
         navigate('/chat')
     }
-
-    // async function uploadpfp(e: ChangeEvent<HTMLInputElement>) {
-    //     const file = e.target.files?.[0]
-    //     if(file) {
-    //         await uploadBytes(stref, file)
-    //         const turl = await getDownloadURL(stref)
-    //         setURL(turl)
-    //     }
-    //     else {
-    //         setURL('src/assets/defaultpfp.jpg');
-    //     }
-    // }
 
     async function uploadpfp(e: ChangeEvent<HTMLInputElement>) {
         const imageFile = e.target.files?.[0];      

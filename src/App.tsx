@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react"
-import { Route, Routes } from "react-router-dom"
+import { Route, Routes, useLocation } from "react-router-dom"
 import Login from "./pages/Login"
 import Chat from "./pages/Chat"
 import './App.css'
@@ -20,7 +20,7 @@ function App() {
 
     useEffect(() => {(async () => {
         onAuthStateChanged(auth, async (currentUser) => {
-            if(currentUser) {
+            if(currentUser && useLocation().pathname != '/') {
                 setUser(currentUser);
                 const dbref = ref(db, `users/${currentUser.uid}`)
                 const ss = await get(dbref)
@@ -31,6 +31,7 @@ function App() {
 
     return (
         <>
+        <h1>Current User: {user? user.displayName: 'no user logged in'}</h1>
         <appContext.Provider value={[user, setUser, appUser, setAU]}>        
         <Routes>
         <Route path='/' element={<Login/>}/>
