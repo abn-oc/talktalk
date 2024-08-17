@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom"
 import cnfg from "../configuration"
 import { appContext } from "../App"
 import { getDownloadURL, getStorage, ref as refs, uploadBytes } from "firebase/storage"
+import imageCompression from "browser-image-compression"
 
 export default function Profile() {
 
@@ -26,15 +27,34 @@ export default function Profile() {
         navigate('/chat')
     }
 
+    // async function uploadpfp(e: ChangeEvent<HTMLInputElement>) {
+    //     const file = e.target.files?.[0]
+    //     if(file) {
+    //         await uploadBytes(stref, file)
+    //         const turl = await getDownloadURL(stref)
+    //         setURL(turl)
+    //     }
+    //     else {
+    //         setURL('src/assets/defaultpfp.jpg');
+    //     }
+    // }
+
     async function uploadpfp(e: ChangeEvent<HTMLInputElement>) {
-        const file = e.target.files?.[0]
-        if(file) {
-            await uploadBytes(stref, file)
+        const imageFile = e.target.files?.[0];      
+        const options = {
+          maxSizeMB: 0.01,
+          maxWidthOrHeight: 100,
+          useWebWorker: true,
+        }
+        try {
+        if(imageFile) {
+            const compressedFile = await imageCompression(imageFile, options);      
+            await uploadBytes(stref, compressedFile)
             const turl = await getDownloadURL(stref)
             setURL(turl)
         }
-        else {
-            setURL('src/assets/defaultpfp.jpg');
+        } catch (error) {
+          console.log(error);
         }
     }
 
@@ -61,4 +81,8 @@ export default function Profile() {
         </form>
         </>
     )
+}
+
+function uploadToServer(compressedFile: File) {
+    throw new Error("Function not implemented.")
 }

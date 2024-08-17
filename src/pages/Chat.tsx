@@ -3,23 +3,23 @@ import cnfg from '../configuration'
 import { getDatabase, onValue, ref, push} from 'firebase/database'
 import { useNavigate } from 'react-router-dom';
 import { appContext } from '../App';
-import { appUser, Message as MessageType } from '../types/types';
+import { Message as MessageType } from '../types/types';
 import Message from '../components/Message';
 
 function Chat() {
 
-  const [msgsList,setmsgsList] = useState<MessageType[]|string[]>(["loading..."])
+  const [msgsList,setmsgsList] = useState<MessageType[]>([{uid: "", content: "loading"}])
   const [value,setValue] = useState<string>("")
   const navigate = useNavigate()
   const db = getDatabase(cnfg)
   const dbmsgs = ref(db, 'dbmsgs')
-  // const user = useContext(appContext)[0]
+  const user = useContext(appContext)[0]
   const setUser = useContext(appContext)[1]
-  const userApp:appUser = useContext(appContext)[2]
+  // const userApp:appUser = useContext(appContext)[2]
 
   async function sendMsg(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    const msg:MessageType = {pfpURL: userApp.pfp, username: userApp.username, content: value} 
+    const msg:MessageType = {uid: user.uid, content: value} 
     push(dbmsgs, msg)
     setValue("")
   }

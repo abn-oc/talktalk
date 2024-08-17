@@ -4,7 +4,6 @@ export interface appUser {
 }
 
 export interface Message {
-    pfpURL: string
-    username: string
+    uid: string
     content: string
 }
