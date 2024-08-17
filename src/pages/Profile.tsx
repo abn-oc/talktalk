@@ -82,7 +82,3 @@ export default function Profile() {
         </>
     )
 }
-
-function uploadToServer(compressedFile: File) {
-    throw new Error("Function not implemented.")
-}
