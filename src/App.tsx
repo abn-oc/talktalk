@@ -14,6 +14,7 @@ export const appContext = createContext<any>(null)
 
 function App() {
     
+    const location = useLocation()
     const navigate = useNavigate()
     const db = getDatabase(cnfg)
     const [user, setUser] = useState<null | User>(null)
@@ -21,7 +22,7 @@ function App() {
 
     useEffect(() => {(async () => {
         onAuthStateChanged(auth, async (currentUser) => {
-            if(currentUser && useLocation().pathname != '/') {
+            if(currentUser && location.pathname != '/') {
                 setUser(currentUser);
                 const dbref = ref(db, `users/${currentUser.uid}`)
                 const ss = await get(dbref)
