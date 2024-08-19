@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react"
-import { Route, Routes, useLocation } from "react-router-dom"
+import { Route, Routes, useLocation, useNavigate } from "react-router-dom"
 import Login from "./pages/Login"
 import Chat from "./pages/Chat"
 import './App.css'
@@ -14,6 +14,7 @@ export const appContext = createContext<any>(null)
 
 function App() {
     
+    const navigate = useNavigate()
     const db = getDatabase(cnfg)
     const [user, setUser] = useState<null | User>(null)
     const [appUser, setAU] = useState<null | appUser>(null)
@@ -32,6 +33,7 @@ function App() {
     return (
         <>
         <h1>Current User: {user? user.displayName: 'no user logged in'}</h1>
+        {user? <button onClick={() => navigate('/profile')}>profile</button>: <></>}
         <appContext.Provider value={[user, setUser, appUser, setAU]}>        
         <Routes>
         <Route path='/' element={<Login/>}/>

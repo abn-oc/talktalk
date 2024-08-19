@@ -48,7 +48,6 @@ function Chat() {
     <form onSubmit={sendMsg}>
       <input type="text" value={value} onChange={e => setValue(e.target.value)}/>
     </form>
-    <button onClick={() => navigate('/profile')}>profile</button>
     <button onClick={SignOutt}>sign out</button>
     </>
   )
