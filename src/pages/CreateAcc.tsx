@@ -21,13 +21,15 @@ export default function CreateAcc() {
     }
 
     return (
-        <>
-        <h1>Create Account:</h1>
-        <form onSubmit={createAccount}>
-            <input type="text" value={em} onChange={e => setEM(e.target.value)} placeholder="email"/>
-            <input type="text" value={pass} onChange={e => setPass(e.target.value)} placeholder="password"/>
-            <button>Create Account</button>
+        <div className="h-[86.7vh]  bg-neutral-950 text-white flex flex-col items-center justify-center">
+        <div className="flex flex-col">
+        <p className="mb-3 mr-auto font-bold text-2xl">Create Account:</p>
+        <form className="flex flex-col items-center" onSubmit={createAccount}>
+            <input className="bg-neutral-900 p-3 rounded mb-5" type="text" value={em} onChange={e => setEM(e.target.value)} placeholder="email"/>
+            <input className="bg-neutral-900 p-3 rounded mb-5" type="text" value={pass} onChange={e => setPass(e.target.value)} placeholder="password"/>
+            <button className="active:bg-black w-[17vw] border border-white border-solid p-3 rounded mb-5 hover:bg-neutral-900">Create Account</button>
         </form>
-        </>
+        </div>
+        </div>
     )
 }

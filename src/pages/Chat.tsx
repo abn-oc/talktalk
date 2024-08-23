@@ -30,6 +30,11 @@ function Chat() {
   }
 
   useEffect(() => {
+    const chat = document.getElementById("chat")
+    if(chat) chat.scrollTop = chat.scrollHeight;
+  },[msgsList])
+
+  useEffect(() => {
     onValue(dbmsgs, snapshot => {
       const ss = snapshot.val() || {}
       const vals: MessageType[] = Object.values(ss)
@@ -40,16 +45,14 @@ function Chat() {
   let msgsMarkup = msgsList.map(a => <Message msg={a}/>)
 
   return (
-    <>
-    <h1>Chat</h1>
-    <ol>
+    <div className="h-[86.7vh] bg-neutral-950 text-white flex flex-col">
+    <ol id='chat' className='mt-5 mx-5 overflow-y-scroll h-[26rem]'>
       {msgsMarkup}
     </ol>
     <form onSubmit={sendMsg}>
-      <input type="text" value={value} onChange={e => setValue(e.target.value)}/>
+      <input className='mx-5 w-[96vw] bg-neutral-900 p-3 rounded mt-5' type="text" value={value} onChange={e => setValue(e.target.value)} placeholder='send a message'/>
     </form>
-    <button onClick={SignOutt}>sign out</button>
-    </>
+    </div>
   )
 }
 

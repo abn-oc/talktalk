@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react"
-import { Route, Routes, useLocation, useNavigate } from "react-router-dom"
+import { Link, Route, Routes, useLocation, useNavigate } from "react-router-dom"
 import Login from "./pages/Login"
 import Chat from "./pages/Chat"
 import './App.css'
@@ -9,6 +9,8 @@ import { appUser } from "./types/types"
 import CreateAcc from "./pages/CreateAcc"
 import cnfg, { auth } from "./configuration"
 import { get, getDatabase, ref } from "firebase/database"
+import { CgProfile } from "react-icons/cg";
+import { GoSignOut } from "react-icons/go";
 
 export const appContext = createContext<any>(null) 
 
@@ -19,6 +21,7 @@ function App() {
     const db = getDatabase(cnfg)
     const [user, setUser] = useState<null | User>(null)
     const [appUser, setAU] = useState<null | appUser>(null)
+    const [h,setH] = useState<boolean>(false)
 
     useEffect(() => {(async () => {
         onAuthStateChanged(auth, async (currentUser) => {
@@ -33,8 +36,16 @@ function App() {
 
     return (
         <>
-        <h1>Current User: {user? user.displayName: 'no user logged in'}</h1>
-        {user? <button onClick={() => navigate('/profile')}>profile</button>: <></>}
+        <div className="h-20 bg-neutral-950 border-b-2 border-solid border-white text-white flex items-center">
+        <Link to={user? '/chat': '/'} className="ml-4 font-bold text-4xl">talktalkk</Link>
+        <div className="ml-auto mr-4">
+        {user? <button className="hover:underline underline-offset-8" onClick={() => {setH(!h)}}>{appUser?.username}</button>: <button >no user logged in</button>}
+        {h? <div className="w-[7.8rem] bg-white text-gray-700 absolute right-3 z-10 flex flex-col rounded py-2 ">
+            <button className="flex flex-row items-center h-9 px-2 hover:bg-gray-200 active:bg-gray-300" onClick={() => {setH(!h); navigate('/profile')}}>Profile<CgProfile className="size-5 ml-auto"/></button>
+            <button className="flex flex-row items-center h-9 px-2 hover:bg-gray-200 active:bg-gray-300" onClick={() => {setH(!h);setUser(null);navigate('/')}}>Sign Out<GoSignOut className="size-5 ml-auto"/></button>
+        </div>:<></>}
+        </div>
+        </div>
         <appContext.Provider value={[user, setUser, appUser, setAU]}>        
         <Routes>
         <Route path='/' element={<Login/>}/>

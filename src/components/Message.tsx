@@ -26,12 +26,12 @@ export default function Message({msg}:{msg:MessageType}) {
     })()},[])
 
     return (
-        <>
-        <div style={{display: "flex", flexDirection: "row"}}>
-        <img src={ua? ua.pfp: 'src/assets/spinner.gif'} width={50}/>
-        <p>{ua?.username}:</p>
+        <div className="flex flex-row mt-5 items-center">
+        <img className="rounded-full mr-3" src={ua? ua.pfp: 'public/assets/spinner.gif'} width={50}/>
+        <div className="flex flex-col">
+        <p className="font-bold">{ua?.username}:</p>
         <p>{msg.content}</p>
         </div>
-        </>
+        </div>
     )
 }
