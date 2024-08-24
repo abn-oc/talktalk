@@ -69,7 +69,7 @@ export default function Profile() {
         <input type="file" id="myfile" onChange={uploadpfp} style={{display: "none"}}/>
         <label htmlFor="myfile"><button className="my-3 hover:underline underline-offset-8" type="button" onClick={() => document.getElementById("myfile")?.click()}>Upload an image</button></label>
         <input className="bg-neutral-900 p-3 rounded mt-5" type="text" value={value} onChange={e => setValue(e.target.value)}/>
-        <button onClick={updateProfile} className="w-[17vw] my-5 border border-white border-solid p-3 rounded mb-5 hover:bg-neutral-900 active:bg-black" type="button">Update Profile</button>
+        <button onClick={updateProfile} className="my-5 border border-white border-solid p-3 rounded mb-5 hover:bg-neutral-900 active:bg-black" type="button">Update Profile</button>
         </div>
         </div>
     )
