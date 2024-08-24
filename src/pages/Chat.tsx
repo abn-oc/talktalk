@@ -42,7 +42,7 @@ function Chat() {
       {msgsMarkup}
     </ol>
     <form onSubmit={sendMsg}>
-      <input id='chatinput' className='mx-5 w-[96vw] bg-neutral-900 p-3 rounded mt-5 mb-2' type="text" value={value} onChange={e => setValue(e.target.value)} placeholder='send a message'/>
+      <input id='chatinput' className='mx-5 lg:w-[96vw] bg-neutral-900 p-3 rounded mt-5 mb-2 w-[90vw]' type="text" value={value} onChange={e => setValue(e.target.value)} placeholder='send a message'/>
     </form>
     </div>
   )
