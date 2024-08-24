@@ -1,5 +1,5 @@
 import { DataSnapshot, get, getDatabase, ref, set } from "firebase/database"
-import { ChangeEvent, FormEvent, useContext, useEffect, useState } from "react"
+import { ChangeEvent, useContext, useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import cnfg from "../configuration"
 import { appContext } from "../App"
@@ -17,7 +17,7 @@ export default function Profile() {
     const stref = refs(st, `${user.uid}/lain.jpg`)
     const navigate = useNavigate()
     const [value, setValue] = useState<string>("loading...")
-    const [URL, setURL] = useState<string>('public/assets/spinner.gif')
+    const [URL, setURL] = useState<string>('/assets/spinner.gif')
 
     async function updateProfile() {
         await set(dbref, {username: value, pfp: URL})
@@ -27,7 +27,7 @@ export default function Profile() {
     }
 
     async function uploadpfp(e: ChangeEvent<HTMLInputElement>) {
-        setURL('public/assets/spinner.gif')
+        setURL('/assets/spinner.gif')
         const imageFile = e.target.files?.[0];      
         const options = {
           maxSizeMB: 0.01,
@@ -54,7 +54,7 @@ export default function Profile() {
         }
         else {
             setValue("")
-            setURL('public/assets/defaultpfp.jpg')
+            setURL('/assets/defaultpfp.jpg')
         }
     })()}, [])
 

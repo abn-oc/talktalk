@@ -34,15 +34,30 @@ function App() {
         })
     })()}, []);
 
+    useEffect(() => {
+        function handleClickOutside(e: MouseEvent) {
+            const dropbox = document.getElementById("dropbox")
+            if (dropbox && !dropbox.contains(e.target as Node)) {
+                setH(false)
+            }
+        }
+
+        document.addEventListener('click', handleClickOutside)
+
+        return () => {
+            document.removeEventListener('click', handleClickOutside)
+        };
+    }, []);
+
     return (
         <>
         <div className="h-20 bg-neutral-950 border-b-2 border-solid border-white text-white flex items-center">
         <Link to={user? '/chat': '/'} className="ml-4 font-bold text-4xl">talktalkk</Link>
         <div className="ml-auto mr-4">
-        {user? <button className="hover:underline underline-offset-8" onClick={() => {setH(!h)}}>{appUser?.username}</button>: <button >no user logged in</button>}
-        {h? <div className="w-[7.8rem] bg-white text-gray-700 absolute right-3 z-10 flex flex-col rounded py-2 ">
-            <button className="flex flex-row items-center h-9 px-2 hover:bg-gray-200 active:bg-gray-300" onClick={() => {setH(!h); navigate('/profile')}}>Profile<CgProfile className="size-5 ml-auto"/></button>
-            <button className="flex flex-row items-center h-9 px-2 hover:bg-gray-200 active:bg-gray-300" onClick={() => {setH(!h);setUser(null);navigate('/')}}>Sign Out<GoSignOut className="size-5 ml-auto"/></button>
+        {user? <button className="hover:underline underline-offset-8" onClick={(e) => {e.stopPropagation();setH(!h)}}>{appUser?.username}</button>: <button >no user logged in</button>}
+        {h? <div id="dropbox" className="w-[7.8rem] bg-white text-gray-700 absolute right-3 z-10 flex flex-col rounded py-2 ">
+            <button className="flex flex-row items-center h-9 px-2 hover:bg-gray-200 active:bg-gray-300" onClick={() => {setH(false);navigate('/profile')}}>Profile<CgProfile className="size-5 ml-auto"/></button>
+            <button className="flex flex-row items-center h-9 px-2 hover:bg-gray-200 active:bg-gray-300" onClick={() => {setH(false);setUser(null);navigate('/')}}>Sign Out<GoSignOut className="size-5 ml-auto"/></button>
         </div>:<></>}
         </div>
         </div>

@@ -27,7 +27,7 @@ export default function Message({msg}:{msg:MessageType}) {
 
     return (
         <div className="flex flex-row mt-5 items-center">
-        <img className="rounded-full mr-3" src={ua? ua.pfp: 'public/assets/spinner.gif'} width={50}/>
+        <img className="rounded-full mr-3" src={ua? ua.pfp: '/assets/spinner.gif'} width={50}/>
         <div className="flex flex-col">
         <p className="font-bold">{ua?.username}:</p>
         <p>{msg.content}</p>
