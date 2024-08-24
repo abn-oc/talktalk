@@ -54,7 +54,7 @@ function App() {
     return (
         <>
         <div className="h-[12vh] bg-neutral-950 border-b-2 border-solid border-white text-white flex items-center">
-        <Link to={user? '/chat': '/'} className="ml-4 font-bold text-4xl overflow-hidden">talktalkk</Link>
+        <Link to={user? '/chat': '/'} className="ml-4 font-bold text-4xl overflow-y-hidden">talktalkk</Link>
         <div className="ml-auto mr-4">
         {user? <button className="hover:underline underline-offset-8 flex flex-row items-center text-lg" onClick={(e) => {e.stopPropagation();setH(!h)}}>{appUser? appUser.username: "loading"} <img src={appUser? appUser.pfp: "/public/assets/spinner.gif"} width={40} className="ml-2 rounded-full"/></button>: <button >no user logged in</button>}
         {h? <div id="dropbox" className="w-[7.8rem] bg-white text-gray-700 absolute right-3 z-10 flex flex-col rounded py-2 ">
