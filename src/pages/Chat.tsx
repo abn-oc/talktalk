@@ -37,7 +37,7 @@ function Chat() {
   let msgsMarkup = msgsList.map(a => <Message msg={a}/>)
 
   return (
-    <div className="h-[86.7vh] bg-neutral-950 text-white flex flex-col">
+    <div className="h-[88vh] bg-neutral-950 text-white flex flex-col">
     <ol id='chat' className='mt-5 mx-5 overflow-y-scroll h-[26rem]'>
       {msgsMarkup}
     </ol>

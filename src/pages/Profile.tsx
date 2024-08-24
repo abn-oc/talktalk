@@ -18,12 +18,15 @@ export default function Profile() {
     const navigate = useNavigate()
     const [value, setValue] = useState<string>("loading...")
     const [URL, setURL] = useState<string>('/assets/spinner.gif')
+    const setLoading = useContext(appContext)[4]
 
     async function updateProfile() {
+        setLoading(true)
         await set(dbref, {username: value, pfp: URL})
         const ss: DataSnapshot = await get(dbref)
         if(ss.exists()) setAU(ss.val())
         navigate('/chat')
+        setLoading(false)
     }
 
     async function uploadpfp(e: ChangeEvent<HTMLInputElement>) {
@@ -59,7 +62,7 @@ export default function Profile() {
     })()}, [])
 
     return (
-        <div className="h-[86.7vh] bg-neutral-950 text-white flex flex-col items-center">
+        <div className="h-[88vh] bg-neutral-950 text-white flex flex-col items-center">
         <div className="flex flex-col items-center mt-5">
         <p className="font-bold my-5 text-2xl mr-auto">profile:</p>
         <img className="rounded-full" src={URL} width={100} />
