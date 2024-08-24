@@ -37,12 +37,12 @@ function Chat() {
   let msgsMarkup = msgsList.map(a => <Message msg={a}/>)
 
   return (
-    <div className="h-[88vh] bg-neutral-950 text-white flex flex-col">
-    <ol id='chat' className='mt-5 mx-5 overflow-y-scroll h-[26rem]'>
+    <div className="h-[88vh] bg-neutral-950 text-white flex flex-col justify-between">
+    <ol id='chat' className='mt-5 mx-5 overflow-y-scroll lg:h-[26rem] h-[74vh]'>
       {msgsMarkup}
     </ol>
     <form onSubmit={sendMsg}>
-      <input id='chatinput' className='mx-5 lg:w-[96vw] bg-neutral-900 p-3 rounded mt-5 mb-2 w-[90vw]' type="text" value={value} onChange={e => setValue(e.target.value)} placeholder='send a message'/>
+      <input id='chatinput' className='mx-5 lg:w-[96vw] bg-neutral-900 p-3 rounded lg:mt-5 lg:mb-2 mb-8 w-[90vw]' type="text" value={value} onChange={e => setValue(e.target.value)} placeholder='send a message'/>
     </form>
     </div>
   )
