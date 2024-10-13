@@ -1,5 +1,5 @@
 # talktalk
-chatting app (incomplete yet)
+simple chatting app
 
 Frameworks/libs:
 React w Typescript
